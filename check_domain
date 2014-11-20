@@ -1,0 +1,36 @@
+require 'net/http'
+require 'uri'
+
+def do_chk(domain)
+	uri = URI("http://panda.www.net.cn/cgi-bin/check.cgi?area_domain=#{domain}")
+	res = Net::HTTP.get(uri)
+	if res.include?('210')
+		puts "===========ok:" +  domain
+	else
+		puts "ng:" + domain
+	end
+end
+
+def start
+	x = ('a'..'z').to_a
+	for i in 0..50
+		domain = ''
+		for i in 0..5
+			domain += x[Random.new.rand(0..25)]
+		end
+		domain  += ".net"
+		do_chk(domain)
+	end
+end
+
+def start2
+	('a'..'z').to_a.each do |x|
+		('a'..'z').to_a.each do |y|
+			do_chk(x + y + '.com')
+		end
+	end
+end
+	
+start2
+
+#start
